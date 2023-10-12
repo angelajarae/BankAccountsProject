@@ -4,7 +4,7 @@
  */
 package bankproject;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -12,25 +12,63 @@ import java.util.Date;
  */
 public class SavingsAccount extends Account{
     private int _monthPeriods;
-    private Date _expirationDate=new Date(); 
+    private LocalDate _expirationDate=LocalDate.now(); 
 
     public SavingsAccount(String number, String clientName, double balance) {
         super(number, clientName, balance);
+        _monthPeriods=6;
+        _expirationDate=_expirationDate.plusMonths(_monthPeriods);
+    }
+    
+    public SavingsAccount(String number, String clientName, double balance, int periodo) {
+        super(number, clientName, balance);
+        _monthPeriods=periodo;
+        _expirationDate=_expirationDate.plusMonths(_monthPeriods);
+    }
+
+    
+    @Override
+    public boolean deposit(double amount) {
+        LocalDate today=LocalDate.now();
+        
+        if(today.isBefore(_expirationDate)){
+            setBalance(getBalance()+amount);
+            return true;
+        }
+        else{
+            return false;
+        }      
     }
 
     @Override
-    public boolean deposit() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean withdraw(double amount) {
+        LocalDate today=LocalDate.now();
+        
+        if(today.isBefore(_expirationDate)){
+            if(getBalance()>=amount){
+                setBalance(getBalance()-amount);
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        } 
     }
 
     @Override
-    public boolean withdraw() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean calculateInterest() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean calculateInterest(double percentage) {
+        LocalDate today=LocalDate.now();
+        
+        if(today.isBefore(_expirationDate)){
+            setBalance(getBalance()+getBalance()*percentage);
+            return true;
+        }
+        else{
+            return false;
+        }   
     }
 
     /**
@@ -50,15 +88,16 @@ public class SavingsAccount extends Account{
     /**
      * @return the _expirationDate
      */
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return _expirationDate;
     }
 
     /**
      * @param _expirationDate the _expirationDate to set
      */
-    public void setExpirationDate(Date _expirationDate) {
+    public void setExpirationDate(LocalDate _expirationDate) {
         this._expirationDate = _expirationDate;
     }
+
     
 }

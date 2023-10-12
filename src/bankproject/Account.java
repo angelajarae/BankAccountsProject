@@ -4,7 +4,7 @@
  */
 package bankproject;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -14,20 +14,20 @@ public abstract class Account {
     private String _number;
     private String _clientName;
     private double _balance;
-    private Date _oppeningDate;
+    private LocalDate _oppeningDate;
     
     public Account(String number,String clientName,double balance){
         _number=number;
         _clientName=clientName;
         _balance=balance;
-        _oppeningDate=new Date();
+        _oppeningDate=LocalDate.now();
     }
    
-    public abstract boolean deposit();
+    public abstract boolean deposit(double amount);
     
-    public abstract boolean withdraw();
+    public abstract boolean withdraw(double amount);
     
-    public abstract boolean calculateInterest();
+    public abstract boolean calculateInterest(double percentage);
   
     /**
      * @return the _number
@@ -67,21 +67,21 @@ public abstract class Account {
     /**
      * @param _balance the _balance to set
      */
-    public void setBalance(float _balance) {
+    public void setBalance(double _balance) {
         this._balance = _balance;
     }
 
     /**
      * @return the oppeningDate
      */
-    public Date getOppeningDate() {
+    public LocalDate getOppeningDate() {
         return _oppeningDate;
     }
 
     /**
      * @param _oppeningDate the _oppeningDate to set
      */
-    public void setOppeningDate(Date _oppeningDate) {
+    public void setOppeningDate(LocalDate _oppeningDate) {
         this._oppeningDate = _oppeningDate;
     }
     
